@@ -11,6 +11,7 @@ import { teamService } from "@/lib/services/team-service"
 import type { Team, TeamMember } from "@/lib/types"
 import { ArrowLeft, Users, FolderKanban } from "lucide-react"
 import Link from "next/link"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function TeamDetailPage() {
   const params = useParams()
@@ -19,6 +20,40 @@ export default function TeamDetailPage() {
   const [team, setTeam] = useState<Team | null>(null)
   const [members, setMembers] = useState<TeamMember[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const { user } = useAuth()
+  const [newMemberEmail, setNewMemberEmail] = useState("");
+  const [addMemberLoading, setAddMemberLoading] = useState(false);
+  const [removeLoading, setRemoveLoading] = useState<number|null>(null);
+  const userIsLeader = !!team && !!user && (team as any).leader_id === user.id;
+
+  const handleAddMember = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!team) return;
+    setAddMemberLoading(true);
+    try {
+      await teamService.addTeamMemberByEmail(teamId, newMemberEmail)
+      setNewMemberEmail("")
+      const membersData = await teamService.getTeamMembers(teamId)
+      setMembers(membersData)
+    } catch (err) {
+      console.error("Échec de l'ajout du membre:", err)
+    } finally {
+      setAddMemberLoading(false)
+    }
+  };
+  const handleRemoveMember = async (userId: number) => {
+    if (!team) return;
+    setRemoveLoading(userId);
+    try {
+      await teamService.removeTeamMember(teamId, userId)
+      const membersData = await teamService.getTeamMembers(teamId)
+      setMembers(membersData)
+    } catch (err) {
+      console.error("Échec du retrait du membre:", err)
+    } finally {
+      setRemoveLoading(null)
+    }
+  }
 
   useEffect(() => {
     const loadTeamData = async () => {
@@ -85,16 +120,34 @@ export default function TeamDetailPage() {
                 Membres de l'équipe
               </CardTitle>
               <CardDescription>{members.length} membre(s) dans cette équipe</CardDescription>
+              {userIsLeader && (
+                <form onSubmit={handleAddMember} className="mt-4 flex gap-2 items-end">
+                  <div>
+                    <label htmlFor="member-email" className="block text-sm">Ajouter un membre par email</label>
+                    <input id="member-email" type="email" value={newMemberEmail} onChange={e=>setNewMemberEmail(e.target.value)} required disabled={addMemberLoading} className="border p-1 rounded text-sm" placeholder="email@exemple.com" />
+                  </div>
+                  <Button type="submit" disabled={addMemberLoading||!newMemberEmail} className="h-9">{addMemberLoading ? "Ajout en cours..." : "Ajouter"}</Button>
+                </form>
+              )}
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
                 {members.map((member) => (
-                  <div key={member.id} className="flex items-center justify-between">
+                  <div key={member.id} className="flex items-center justify-between gap-2">
                     <div>
-                      <p className="font-medium">{member.user.name}</p>
+                      <p className="font-medium flex items-center gap-2">
+                        {member.user.name}
+                        {member.role === "leader" && <Badge variant="default">Leader</Badge>}
+                        {member.role === "admin" && <Badge variant="default">Leader</Badge>}
+                        {member.role !== "admin" && member.role !== "leader" && <Badge variant="secondary">Membre</Badge>}
+                      </p>
                       <p className="text-sm text-muted-foreground">{member.user.email}</p>
                     </div>
-                    <Badge variant={member.role === "admin" ? "default" : "secondary"}>{member.role}</Badge>
+                    {userIsLeader && member.role !== "admin" && member.role !== "leader" && (
+                      <Button size="sm" variant="destructive" onClick={() => handleRemoveMember(member.user.id)} disabled={removeLoading === member.user.id}>
+                        {removeLoading === member.user.id ? "Retrait..." : "Retirer"}
+                      </Button>
+                    )}
                   </div>
                 ))}
                 {members.length === 0 && <p className="text-sm text-muted-foreground">Aucun membre pour le moment</p>}
