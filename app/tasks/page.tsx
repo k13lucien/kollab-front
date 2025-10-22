@@ -20,7 +20,7 @@ export default function TasksPage() {
   const loadTasks = async () => {
     try {
       const data = await taskService.getTasks()
-      setTasks(data)
+      setTasks(data || [])
     } catch (error) {
       console.error("Failed to load tasks:", error)
     } finally {
@@ -42,8 +42,8 @@ export default function TasksPage() {
       return (
         <Empty
           icon={CheckSquare}
-          title="No tasks found"
-          description="Create your first task to start tracking your work"
+          title="Aucune tâche trouvée"
+          description="Créez votre première tâche pour commencer à suivre votre travail"
           action={
             <PermissionGuard permission="tasks.create">
               <CreateTaskDialog onTaskCreated={loadTasks} />
@@ -67,8 +67,8 @@ export default function TasksPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Tasks</h1>
-            <p className="text-muted-foreground">Manage and track your tasks</p>
+            <h1 className="text-3xl font-bold tracking-tight">Tâches</h1>
+            <p className="text-muted-foreground">Gérez et suivez vos tâches</p>
           </div>
           <PermissionGuard permission="tasks.create">
             <CreateTaskDialog onTaskCreated={loadTasks} />
@@ -82,10 +82,10 @@ export default function TasksPage() {
         ) : (
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList>
-              <TabsTrigger value="all">All ({tasks.length})</TabsTrigger>
-              <TabsTrigger value="pending">Pending ({filterTasks("pending").length})</TabsTrigger>
-              <TabsTrigger value="in_progress">In Progress ({filterTasks("in_progress").length})</TabsTrigger>
-              <TabsTrigger value="completed">Completed ({filterTasks("completed").length})</TabsTrigger>
+              <TabsTrigger value="all">Toutes ({tasks.length})</TabsTrigger>
+              <TabsTrigger value="pending">En attente ({filterTasks("pending").length})</TabsTrigger>
+              <TabsTrigger value="in_progress">En cours ({filterTasks("in_progress").length})</TabsTrigger>
+              <TabsTrigger value="completed">Terminée ({filterTasks("completed").length})</TabsTrigger>
             </TabsList>
             <TabsContent value="all" className="mt-6">
               {renderTaskList(tasks)}

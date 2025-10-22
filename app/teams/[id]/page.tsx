@@ -53,9 +53,9 @@ export default function TeamDetailPage() {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold">Team not found</h2>
+          <h2 className="text-2xl font-bold">Équipe introuvable</h2>
           <Button asChild className="mt-4">
-            <Link href="/teams">Back to Teams</Link>
+            <Link href="/teams">Retour aux équipes</Link>
           </Button>
         </div>
       </DashboardLayout>
@@ -73,7 +73,7 @@ export default function TeamDetailPage() {
           </Button>
           <div className="flex-1">
             <h1 className="text-3xl font-bold tracking-tight">{team.name}</h1>
-            <p className="text-muted-foreground">{team.description || "No description"}</p>
+            <p className="text-muted-foreground">{team.description || "Aucune description"}</p>
           </div>
         </div>
 
@@ -82,9 +82,9 @@ export default function TeamDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Team Members
+                Membres de l'équipe
               </CardTitle>
-              <CardDescription>{members.length} members in this team</CardDescription>
+              <CardDescription>{members.length} membre(s) dans cette équipe</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
@@ -97,7 +97,7 @@ export default function TeamDetailPage() {
                     <Badge variant={member.role === "admin" ? "default" : "secondary"}>{member.role}</Badge>
                   </div>
                 ))}
-                {members.length === 0 && <p className="text-sm text-muted-foreground">No members yet</p>}
+                {members.length === 0 && <p className="text-sm text-muted-foreground">Aucun membre pour le moment</p>}
               </div>
             </CardContent>
           </Card>
@@ -106,12 +106,12 @@ export default function TeamDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <FolderKanban className="h-5 w-5" />
-                Projects
+                Projets
               </CardTitle>
-              <CardDescription>Projects in this team</CardDescription>
+              <CardDescription>Projets dans cette équipe</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">No projects yet</p>
+              <p className="text-sm text-muted-foreground">Aucun projet pour le moment</p>
             </CardContent>
           </Card>
         </div>

@@ -31,16 +31,16 @@ export function DeleteProjectDialog({ project, open, onOpenChange, onProjectDele
     try {
       await projectService.deleteProject(project.id)
       toast({
-        title: "Success",
-        description: "Project deleted successfully",
+        title: "Succès",
+        description: "Projet supprimé avec succès",
       })
       onOpenChange(false)
       onProjectDeleted?.()
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete project",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la suppression du projet",
       })
     } finally {
       setIsLoading(false)
@@ -51,18 +51,17 @@ export function DeleteProjectDialog({ project, open, onOpenChange, onProjectDele
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the project "{project.name}" and all associated tasks. This action cannot be
-            undone.
+            Ceci supprimera définitivement le projet "{project.name}" et toutes les tâches associées. Cette action ne peut pas être annulée.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-            Cancel
+            Annuler
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={isLoading}>
-            {isLoading ? "Deleting..." : "Delete Project"}
+            {isLoading ? "Suppression..." : "Supprimer le projet"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

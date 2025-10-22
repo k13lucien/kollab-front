@@ -31,16 +31,16 @@ export function DeleteTaskDialog({ task, open, onOpenChange, onTaskDeleted }: De
     try {
       await taskService.deleteTask(task.id)
       toast({
-        title: "Success",
-        description: "Task deleted successfully",
+        title: "Succès",
+        description: "Tâche supprimée avec succès",
       })
       onOpenChange(false)
       onTaskDeleted?.()
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete task",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la suppression de la tâche",
       })
     } finally {
       setIsLoading(false)
@@ -51,17 +51,17 @@ export function DeleteTaskDialog({ task, open, onOpenChange, onTaskDeleted }: De
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the task "{task.title}". This action cannot be undone.
+            Ceci supprimera définitivement la tâche "{task.title}". Cette action ne peut pas être annulée.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-            Cancel
+            Annuler
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={isLoading}>
-            {isLoading ? "Deleting..." : "Delete Task"}
+            {isLoading ? "Suppression..." : "Supprimer la tâche"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -38,8 +38,8 @@ export function CreateTeamDialog({ onTeamCreated }: CreateTeamDialogProps) {
     try {
       await teamService.createTeam({ name, description: description || undefined })
       toast({
-        title: "Success",
-        description: "Team created successfully",
+        title: "Succès",
+        description: "Équipe créée avec succès",
       })
       setOpen(false)
       setName("")
@@ -48,8 +48,8 @@ export function CreateTeamDialog({ onTeamCreated }: CreateTeamDialogProps) {
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create team",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la création de l'équipe",
       })
     } finally {
       setIsLoading(false)
@@ -61,21 +61,21 @@ export function CreateTeamDialog({ onTeamCreated }: CreateTeamDialogProps) {
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Create Team
+          Créer une équipe
         </Button>
       </DialogTrigger>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New Team</DialogTitle>
-            <DialogDescription>Create a new team to collaborate with others on projects.</DialogDescription>
+            <DialogTitle>Créer une nouvelle équipe</DialogTitle>
+            <DialogDescription>Créez une nouvelle équipe pour collaborer avec d'autres sur des projets.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Team Name</Label>
+              <Label htmlFor="name">Nom de l'équipe</Label>
               <Input
                 id="name"
-                placeholder="Engineering Team"
+                placeholder="Équipe d'ingénierie"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -83,10 +83,10 @@ export function CreateTeamDialog({ onTeamCreated }: CreateTeamDialogProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description (Optional)</Label>
+              <Label htmlFor="description">Description (optionnel)</Label>
               <Textarea
                 id="description"
-                placeholder="Describe your team's purpose..."
+                placeholder="Décrivez le but de votre équipe..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isLoading}
@@ -96,10 +96,10 @@ export function CreateTeamDialog({ onTeamCreated }: CreateTeamDialogProps) {
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
-              Cancel
+              Annuler
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Creating..." : "Create Team"}
+              {isLoading ? "Création en cours..." : "Créer l'équipe"}
             </Button>
           </DialogFooter>
         </form>

@@ -58,8 +58,8 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
     if (!teamId) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Please select a team",
+        title: "Erreur",
+        description: "Veuillez sélectionner une équipe",
       })
       return
     }
@@ -74,8 +74,8 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
         status,
       })
       toast({
-        title: "Success",
-        description: "Project created successfully",
+        title: "Succès",
+        description: "Projet créé avec succès",
       })
       setOpen(false)
       setName("")
@@ -86,8 +86,8 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create project",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la création du projet",
       })
     } finally {
       setIsLoading(false)
@@ -99,21 +99,21 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Create Project
+          Créer un projet
         </Button>
       </DialogTrigger>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New Project</DialogTitle>
-            <DialogDescription>Create a new project within a team to organize your tasks.</DialogDescription>
+            <DialogTitle>Créer un nouveau projet</DialogTitle>
+            <DialogDescription>Créez un nouveau projet au sein d'une équipe pour organiser vos tâches.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="name">Project Name</Label>
+              <Label htmlFor="name">Nom du projet</Label>
               <Input
                 id="name"
-                placeholder="Website Redesign"
+                placeholder="Refonte du site web"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -121,10 +121,10 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description (Optional)</Label>
+              <Label htmlFor="description">Description (optionnel)</Label>
               <Textarea
                 id="description"
-                placeholder="Describe your project..."
+                placeholder="Décrivez votre projet..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isLoading}
@@ -132,10 +132,10 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="team">Team</Label>
+              <Label htmlFor="team">Équipe</Label>
               <Select value={teamId} onValueChange={setTeamId} disabled={isLoading || !!defaultTeamId}>
                 <SelectTrigger id="team">
-                  <SelectValue placeholder="Select a team" />
+                  <SelectValue placeholder="Sélectionnez une équipe" />
                 </SelectTrigger>
                 <SelectContent>
                   {teams.map((team) => (
@@ -147,25 +147,25 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">Statut</Label>
               <Select value={status} onValueChange={(value: any) => setStatus(value)} disabled={isLoading}>
                 <SelectTrigger id="status">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
+                  <SelectItem value="active">Actif</SelectItem>
+                  <SelectItem value="completed">Terminé</SelectItem>
+                  <SelectItem value="archived">Archivé</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
-              Cancel
+              Annuler
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Creating..." : "Create Project"}
+              {isLoading ? "Création en cours..." : "Créer le projet"}
             </Button>
           </DialogFooter>
         </form>

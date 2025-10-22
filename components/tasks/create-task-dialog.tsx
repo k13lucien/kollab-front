@@ -60,8 +60,8 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
     if (!projectId) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Please select a project",
+        title: "Erreur",
+        description: "Veuillez sélectionner un projet",
       })
       return
     }
@@ -78,8 +78,8 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
         due_date: dueDate || undefined,
       })
       toast({
-        title: "Success",
-        description: "Task created successfully",
+        title: "Succès",
+        description: "Tâche créée avec succès",
       })
       setOpen(false)
       setTitle("")
@@ -92,8 +92,8 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to create task",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la création de la tâche",
       })
     } finally {
       setIsLoading(false)
@@ -105,21 +105,21 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
-          Create Task
+          Créer une tâche
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Create New Task</DialogTitle>
-            <DialogDescription>Create a new task within a project to track your work.</DialogDescription>
+            <DialogTitle>Créer une nouvelle tâche</DialogTitle>
+            <DialogDescription>Créez une nouvelle tâche dans un projet pour suivre votre travail.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Task Title</Label>
+              <Label htmlFor="title">Titre de la tâche</Label>
               <Input
                 id="title"
-                placeholder="Implement user authentication"
+                placeholder="Implémenter l'authentification utilisateur"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -127,10 +127,10 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description (Optional)</Label>
+              <Label htmlFor="description">Description (optionnel)</Label>
               <Textarea
                 id="description"
-                placeholder="Describe the task..."
+                placeholder="Décrivez la tâche..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isLoading}
@@ -138,10 +138,10 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="project">Project</Label>
+              <Label htmlFor="project">Projet</Label>
               <Select value={projectId} onValueChange={setProjectId} disabled={isLoading || !!defaultProjectId}>
                 <SelectTrigger id="project">
-                  <SelectValue placeholder="Select a project" />
+                  <SelectValue placeholder="Sélectionnez un projet" />
                 </SelectTrigger>
                 <SelectContent>
                   {projects.map((project) => (
@@ -154,34 +154,34 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">Statut</Label>
                 <Select value={status} onValueChange={(value: any) => setStatus(value)} disabled={isLoading}>
                   <SelectTrigger id="status">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="pending">En attente</SelectItem>
+                    <SelectItem value="in_progress">En cours</SelectItem>
+                    <SelectItem value="completed">Terminée</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="priority">Priority</Label>
+                <Label htmlFor="priority">Priorité</Label>
                 <Select value={priority} onValueChange={(value: any) => setPriority(value)} disabled={isLoading}>
                   <SelectTrigger id="priority">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="low">Faible</SelectItem>
+                    <SelectItem value="medium">Moyenne</SelectItem>
+                    <SelectItem value="high">Haute</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="due-date">Due Date (Optional)</Label>
+              <Label htmlFor="due-date">Date d'échéance (optionnel)</Label>
               <Input
                 id="due-date"
                 type="date"
@@ -193,10 +193,10 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>
-              Cancel
+              Annuler
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Creating..." : "Create Task"}
+              {isLoading ? "Création en cours..." : "Créer la tâche"}
             </Button>
           </DialogFooter>
         </form>

@@ -57,16 +57,16 @@ export function EditTaskDialog({ task, open, onOpenChange, onTaskUpdated }: Edit
         due_date: dueDate || undefined,
       })
       toast({
-        title: "Success",
-        description: "Task updated successfully",
+        title: "Succès",
+        description: "Tâche mise à jour avec succès",
       })
       onOpenChange(false)
       onTaskUpdated?.()
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to update task",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la mise à jour de la tâche",
       })
     } finally {
       setIsLoading(false)
@@ -78,15 +78,15 @@ export function EditTaskDialog({ task, open, onOpenChange, onTaskUpdated }: Edit
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Task</DialogTitle>
-            <DialogDescription>Update your task's information.</DialogDescription>
+            <DialogTitle>Modifier la tâche</DialogTitle>
+            <DialogDescription>Mettez à jour les informations de votre tâche.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-title">Task Title</Label>
+              <Label htmlFor="edit-title">Titre de la tâche</Label>
               <Input
                 id="edit-title"
-                placeholder="Implement user authentication"
+                placeholder="Implémenter l'authentification utilisateur"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -94,10 +94,10 @@ export function EditTaskDialog({ task, open, onOpenChange, onTaskUpdated }: Edit
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-description">Description (Optional)</Label>
+              <Label htmlFor="edit-description">Description (optionnel)</Label>
               <Textarea
                 id="edit-description"
-                placeholder="Describe the task..."
+                placeholder="Décrivez la tâche..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isLoading}
@@ -106,34 +106,34 @@ export function EditTaskDialog({ task, open, onOpenChange, onTaskUpdated }: Edit
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-status">Status</Label>
+                <Label htmlFor="edit-status">Statut</Label>
                 <Select value={status} onValueChange={(value: any) => setStatus(value)} disabled={isLoading}>
                   <SelectTrigger id="edit-status">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="pending">Pending</SelectItem>
-                    <SelectItem value="in_progress">In Progress</SelectItem>
-                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="pending">En attente</SelectItem>
+                    <SelectItem value="in_progress">En cours</SelectItem>
+                    <SelectItem value="completed">Terminée</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="edit-priority">Priority</Label>
+                <Label htmlFor="edit-priority">Priorité</Label>
                 <Select value={priority} onValueChange={(value: any) => setPriority(value)} disabled={isLoading}>
                   <SelectTrigger id="edit-priority">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="medium">Medium</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
+                    <SelectItem value="low">Faible</SelectItem>
+                    <SelectItem value="medium">Moyenne</SelectItem>
+                    <SelectItem value="high">Haute</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-due-date">Due Date (Optional)</Label>
+              <Label htmlFor="edit-due-date">Date d'échéance (optionnel)</Label>
               <Input
                 id="edit-due-date"
                 type="date"
@@ -145,10 +145,10 @@ export function EditTaskDialog({ task, open, onOpenChange, onTaskUpdated }: Edit
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-              Cancel
+              Annuler
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Updating..." : "Update Task"}
+              {isLoading ? "Mise à jour en cours..." : "Mettre à jour la tâche"}
             </Button>
           </DialogFooter>
         </form>

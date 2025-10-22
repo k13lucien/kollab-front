@@ -51,16 +51,16 @@ export function EditProjectDialog({ project, open, onOpenChange, onProjectUpdate
         status,
       })
       toast({
-        title: "Success",
-        description: "Project updated successfully",
+        title: "Succès",
+        description: "Projet mis à jour avec succès",
       })
       onOpenChange(false)
       onProjectUpdated?.()
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to update project",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la mise à jour du projet",
       })
     } finally {
       setIsLoading(false)
@@ -72,15 +72,15 @@ export function EditProjectDialog({ project, open, onOpenChange, onProjectUpdate
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Edit Project</DialogTitle>
-            <DialogDescription>Update your project's information.</DialogDescription>
+            <DialogTitle>Modifier le projet</DialogTitle>
+            <DialogDescription>Mettez à jour les informations de votre projet.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="edit-name">Project Name</Label>
+              <Label htmlFor="edit-name">Nom du projet</Label>
               <Input
                 id="edit-name"
-                placeholder="Website Redesign"
+                placeholder="Refonte du site web"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -88,10 +88,10 @@ export function EditProjectDialog({ project, open, onOpenChange, onProjectUpdate
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-description">Description (Optional)</Label>
+              <Label htmlFor="edit-description">Description (optionnel)</Label>
               <Textarea
                 id="edit-description"
-                placeholder="Describe your project..."
+                placeholder="Décrivez votre projet..."
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 disabled={isLoading}
@@ -99,25 +99,25 @@ export function EditProjectDialog({ project, open, onOpenChange, onProjectUpdate
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit-status">Status</Label>
+              <Label htmlFor="edit-status">Statut</Label>
               <Select value={status} onValueChange={(value: any) => setStatus(value)} disabled={isLoading}>
                 <SelectTrigger id="edit-status">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="completed">Completed</SelectItem>
-                  <SelectItem value="archived">Archived</SelectItem>
+                  <SelectItem value="active">Actif</SelectItem>
+                  <SelectItem value="completed">Terminé</SelectItem>
+                  <SelectItem value="archived">Archivé</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-              Cancel
+              Annuler
             </Button>
             <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Updating..." : "Update Project"}
+              {isLoading ? "Mise à jour en cours..." : "Mettre à jour le projet"}
             </Button>
           </DialogFooter>
         </form>

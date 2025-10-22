@@ -27,14 +27,14 @@ export function LoginForm() {
     try {
       await login({ email, password })
       toast({
-        title: "Success",
-        description: "You have been logged in successfully",
+        title: "Succès",
+        description: "Connexion réussie !",
       })
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to login",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la connexion",
       })
     } finally {
       setIsLoading(false)
@@ -44,8 +44,8 @@ export function LoginForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Sign in to TaskFlow</CardTitle>
-        <CardDescription>Enter your credentials to access your account</CardDescription>
+        <CardTitle>Connexion à TaskFlow</CardTitle>
+        <CardDescription>Entrez vos identifiants pour accéder à votre compte</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
@@ -54,7 +54,7 @@ export function LoginForm() {
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="vous@exemple.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -62,7 +62,7 @@ export function LoginForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Mot de passe</Label>
             <Input
               id="password"
               type="password"
@@ -76,12 +76,12 @@ export function LoginForm() {
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Signing in..." : "Sign in"}
+            {isLoading ? "Connexion en cours..." : "Se connecter"}
           </Button>
           <p className="text-sm text-muted-foreground text-center">
-            {"Don't have an account? "}
+            {"Vous n'avez pas de compte ? "}
             <Link href="/register" className="text-primary hover:underline">
-              Sign up
+              Inscription
             </Link>
           </p>
         </CardFooter>

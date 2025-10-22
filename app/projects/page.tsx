@@ -18,7 +18,7 @@ export default function ProjectsPage() {
   const loadProjects = async () => {
     try {
       const data = await projectService.getProjects()
-      setProjects(data)
+      setProjects(data || [])
     } catch (error) {
       console.error("Failed to load projects:", error)
     } finally {
@@ -35,8 +35,8 @@ export default function ProjectsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Projects</h1>
-            <p className="text-muted-foreground">Manage your projects and organize your work</p>
+            <h1 className="text-3xl font-bold tracking-tight">Projets</h1>
+            <p className="text-muted-foreground">Gérez vos projets et organisez votre travail</p>
           </div>
           <PermissionGuard permission="projects.create">
             <CreateProjectDialog onProjectCreated={loadProjects} />
@@ -48,16 +48,18 @@ export default function ProjectsPage() {
             <Spinner size="lg" />
           </div>
         ) : projects.length === 0 ? (
-          <Empty
-            icon={FolderKanban}
-            title="No projects yet"
-            description="Create your first project to start organizing your tasks"
-            action={
+          <>
+            <Empty
+              icon={FolderKanban}
+              title="Aucun projet pour le moment"
+              description="Créez votre premier projet pour organiser vos tâches"
+            />
+            <div className="mt-4 flex justify-center">
               <PermissionGuard permission="projects.create">
                 <CreateProjectDialog onProjectCreated={loadProjects} />
               </PermissionGuard>
-            }
-          />
+            </div>
+          </>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (

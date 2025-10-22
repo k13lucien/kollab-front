@@ -27,7 +27,7 @@ export function TeamCard({ team, onTeamUpdated }: TeamCardProps) {
           <div className="flex items-start justify-between">
             <div className="space-y-1">
               <CardTitle className="text-xl">{team.name}</CardTitle>
-              <CardDescription className="line-clamp-2">{team.description || "No description"}</CardDescription>
+              <CardDescription className="line-clamp-2">{team.description || "Aucune description"}</CardDescription>
             </div>
             <PermissionGuard permissions={["teams.update", "teams.delete"]}>
               <DropdownMenu>
@@ -40,13 +40,13 @@ export function TeamCard({ team, onTeamUpdated }: TeamCardProps) {
                   <PermissionGuard permission="teams.update">
                     <DropdownMenuItem onClick={() => setEditOpen(true)}>
                       <Pencil className="mr-2 h-4 w-4" />
-                      Edit
+                      Éditer
                     </DropdownMenuItem>
                   </PermissionGuard>
                   <PermissionGuard permission="teams.delete">
                     <DropdownMenuItem onClick={() => setDeleteOpen(true)} className="text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
+                      Supprimer
                     </DropdownMenuItem>
                   </PermissionGuard>
                 </DropdownMenuContent>
@@ -57,12 +57,12 @@ export function TeamCard({ team, onTeamUpdated }: TeamCardProps) {
         <CardContent>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Users className="h-4 w-4" />
-            <span>{team.members_count || 0} members</span>
+            <span>{team.members_count || 0} membre{(team.members_count || 0) > 1 ? "s" : ""}</span>
           </div>
         </CardContent>
         <CardFooter>
           <Button asChild className="w-full">
-            <Link href={`/teams/${team.id}`}>View Team</Link>
+            <Link href={`/teams/${team.id}`}>Voir l'équipe</Link>
           </Button>
         </CardFooter>
       </Card>

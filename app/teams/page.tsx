@@ -18,7 +18,7 @@ export default function TeamsPage() {
   const loadTeams = async () => {
     try {
       const data = await teamService.getTeams()
-      setTeams(data)
+      setTeams(data || [])
     } catch (error) {
       console.error("Failed to load teams:", error)
     } finally {
@@ -35,8 +35,8 @@ export default function TeamsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Teams</h1>
-            <p className="text-muted-foreground">Manage your teams and collaborate with others</p>
+            <h1 className="text-3xl font-bold tracking-tight">Équipes</h1>
+            <p className="text-muted-foreground">Gérez vos équipes et collaborez avec d'autres</p>
           </div>
           <PermissionGuard permission="teams.create">
             <CreateTeamDialog onTeamCreated={loadTeams} />
@@ -48,16 +48,18 @@ export default function TeamsPage() {
             <Spinner size="lg" />
           </div>
         ) : teams.length === 0 ? (
-          <Empty
-            icon={Users}
-            title="No teams yet"
-            description="Create your first team to start collaborating with others"
-            action={
+          <>
+            <Empty
+              icon={Users}
+              title="Aucune équipe pour le moment"
+              description="Créez votre première équipe pour commencer à collaborer avec d'autres"
+            />
+            <div className="mt-4 flex justify-center">
               <PermissionGuard permission="teams.create">
                 <CreateTeamDialog onTeamCreated={loadTeams} />
               </PermissionGuard>
-            }
-          />
+            </div>
+          </>
         ) : (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {teams.map((team) => (

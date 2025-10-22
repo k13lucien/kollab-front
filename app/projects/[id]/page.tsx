@@ -47,9 +47,9 @@ export default function ProjectDetailPage() {
     return (
       <DashboardLayout>
         <div className="text-center py-12">
-          <h2 className="text-2xl font-bold">Project not found</h2>
+          <h2 className="text-2xl font-bold">Projet introuvable</h2>
           <Button asChild className="mt-4">
-            <Link href="/projects">Back to Projects</Link>
+            <Link href="/projects">Retour aux projets</Link>
           </Button>
         </div>
       </DashboardLayout>
@@ -74,9 +74,9 @@ export default function ProjectDetailPage() {
           <div className="flex-1">
             <div className="flex items-center gap-2">
               <h1 className="text-3xl font-bold tracking-tight">{project.name}</h1>
-              <Badge variant={statusColors[project.status]}>{project.status}</Badge>
+              <Badge variant={statusColors[project.status]}>{project.status === 'active' ? 'Actif' : project.status === 'completed' ? 'Terminé' : 'Archivé'}</Badge>
             </div>
-            <p className="text-muted-foreground">{project.description || "No description"}</p>
+            <p className="text-muted-foreground">{project.description || "Aucune description"}</p>
           </div>
         </div>
 
@@ -85,18 +85,18 @@ export default function ProjectDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
-                Team
+                Équipe
               </CardTitle>
-              <CardDescription>Team associated with this project</CardDescription>
+              <CardDescription>Équipe associée à ce projet</CardDescription>
             </CardHeader>
             <CardContent>
               {project.team ? (
                 <div>
                   <p className="font-medium">{project.team.name}</p>
-                  <p className="text-sm text-muted-foreground">{project.team.description || "No description"}</p>
+                  <p className="text-sm text-muted-foreground">{project.team.description || "Aucune description"}</p>
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground">No team assigned</p>
+                <p className="text-sm text-muted-foreground">Aucune équipe assignée</p>
               )}
             </CardContent>
           </Card>
@@ -105,12 +105,12 @@ export default function ProjectDetailPage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <CheckSquare className="h-5 w-5" />
-                Tasks
+                Tâches
               </CardTitle>
-              <CardDescription>Tasks in this project</CardDescription>
+              <CardDescription>Tâches dans ce projet</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">No tasks yet</p>
+              <p className="text-sm text-muted-foreground">Aucune tâche pour le moment</p>
             </CardContent>
           </Card>
         </div>

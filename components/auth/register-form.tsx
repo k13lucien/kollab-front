@@ -28,8 +28,8 @@ export function RegisterForm() {
     if (password !== passwordConfirmation) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: "Passwords do not match",
+        title: "Erreur",
+        description: "Les mots de passe ne correspondent pas",
       })
       return
     }
@@ -39,14 +39,14 @@ export function RegisterForm() {
     try {
       await register({ name, email, password, password_confirmation: passwordConfirmation })
       toast({
-        title: "Success",
-        description: "Your account has been created successfully",
+        title: "Succès",
+        description: "Votre compte a été créé avec succès",
       })
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to register",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de l'inscription",
       })
     } finally {
       setIsLoading(false)
@@ -56,17 +56,17 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
-        <CardDescription>Enter your information to get started with TaskFlow</CardDescription>
+        <CardTitle>Créer un compte</CardTitle>
+        <CardDescription>Entrez vos informations pour commencer avec TaskFlow</CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">Nom</Label>
             <Input
               id="name"
               type="text"
-              placeholder="John Doe"
+              placeholder="Jean Dupont"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -78,7 +78,7 @@ export function RegisterForm() {
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="vous@exemple.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -86,7 +86,7 @@ export function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Mot de passe</Label>
             <Input
               id="password"
               type="password"
@@ -99,7 +99,7 @@ export function RegisterForm() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password-confirmation">Confirm Password</Label>
+            <Label htmlFor="password-confirmation">Confirmer le mot de passe</Label>
             <Input
               id="password-confirmation"
               type="password"
@@ -114,12 +114,12 @@ export function RegisterForm() {
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
           <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? "Creating account..." : "Create account"}
+            {isLoading ? "Création du compte..." : "Créer le compte"}
           </Button>
           <p className="text-sm text-muted-foreground text-center">
-            Already have an account?{" "}
+            Vous avez déjà un compte ?{" "}
             <Link href="/login" className="text-primary hover:underline">
-              Sign in
+              Se connecter
             </Link>
           </p>
         </CardFooter>

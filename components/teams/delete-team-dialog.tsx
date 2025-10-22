@@ -31,16 +31,16 @@ export function DeleteTeamDialog({ team, open, onOpenChange, onTeamDeleted }: De
     try {
       await teamService.deleteTeam(team.id)
       toast({
-        title: "Success",
-        description: "Team deleted successfully",
+        title: "Succès",
+        description: "Équipe supprimée avec succès",
       })
       onOpenChange(false)
       onTeamDeleted?.()
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to delete team",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de la suppression de l'équipe",
       })
     } finally {
       setIsLoading(false)
@@ -51,18 +51,17 @@ export function DeleteTeamDialog({ team, open, onOpenChange, onTeamDeleted }: De
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogTitle>Êtes-vous sûr ?</AlertDialogTitle>
           <AlertDialogDescription>
-            This will permanently delete the team "{team.name}" and all associated projects and tasks. This action
-            cannot be undone.
+            Ceci supprimera définitivement l'équipe "{team.name}" ainsi que tous les projets et tâches associés. Cette action ne peut pas être annulée.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={isLoading}>
-            Cancel
+            Annuler
           </Button>
           <Button variant="destructive" onClick={handleDelete} disabled={isLoading}>
-            {isLoading ? "Deleting..." : "Delete Team"}
+            {isLoading ? "Suppression..." : "Supprimer l'équipe"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
