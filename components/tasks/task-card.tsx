@@ -52,7 +52,7 @@ export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
                 <Badge variant={statusColors[task.status]}>{task.status.replace("_", " ")}</Badge>
                 <Badge variant={priorityColors[task.priority]}>{task.priority}</Badge>
               </div>
-              <CardDescription className="line-clamp-2">{task.description || "No description"}</CardDescription>
+              <CardDescription className="line-clamp-2">{task.description || "Aucune description"}</CardDescription>
             </div>
             <PermissionGuard permissions={["tasks.update", "tasks.delete"]}>
               <DropdownMenu>
@@ -65,13 +65,13 @@ export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
                   <PermissionGuard permission="tasks.update">
                     <DropdownMenuItem onClick={() => setEditOpen(true)}>
                       <Pencil className="mr-2 h-4 w-4" />
-                      Edit
+                      Éditer
                     </DropdownMenuItem>
                   </PermissionGuard>
                   <PermissionGuard permission="tasks.delete">
                     <DropdownMenuItem onClick={() => setDeleteOpen(true)} className="text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
+                      Supprimer
                     </DropdownMenuItem>
                   </PermissionGuard>
                 </DropdownMenuContent>
@@ -83,18 +83,18 @@ export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
           <div className="space-y-2 text-sm text-muted-foreground">
             {task.project && (
               <p>
-                Project: <span className="font-medium text-foreground">{task.project.name}</span>
+                Projet : <span className="font-medium text-foreground">{task.project.name}</span>
               </p>
             )}
             {task.assigned_user && (
               <p>
-                Assigned to: <span className="font-medium text-foreground">{task.assigned_user.name}</span>
+                Assignée à : <span className="font-medium text-foreground">{task.assigned_user.name}</span>
               </p>
             )}
             {task.due_date && (
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>Due: {formatDate(task.due_date)}</span>
+                <span>Échéance : {formatDate(task.due_date)}</span>
               </div>
             )}
           </div>

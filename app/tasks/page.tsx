@@ -40,16 +40,18 @@ export default function TasksPage() {
   const renderTaskList = (filteredTasks: Task[]) => {
     if (filteredTasks.length === 0) {
       return (
-        <Empty
-          icon={CheckSquare}
-          title="Aucune tâche trouvée"
-          description="Créez votre première tâche pour commencer à suivre votre travail"
-          action={
+        <>
+          <Empty
+            icon={CheckSquare}
+            title="Aucune tâche trouvée"
+            description="Créez votre première tâche pour commencer à suivre votre travail"
+          />
+          <div className="mt-4 flex justify-center">
             <PermissionGuard permission="tasks.create">
               <CreateTaskDialog onTaskCreated={loadTasks} />
             </PermissionGuard>
-          }
-        />
+          </div>
+        </>
       )
     }
 

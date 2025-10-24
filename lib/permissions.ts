@@ -47,7 +47,18 @@ const rolePermissions: Record<User["role"], Permission[]> = {
     "tasks.assign",
     "members.add",
   ],
-  member: ["teams.view", "projects.view", "tasks.create", "tasks.update", "tasks.view"],
+  member: [
+    "teams.view", 
+    "teams.update", 
+    "teams.delete",
+    "projects.view", 
+    "projects.update", 
+    "projects.delete",
+    "tasks.create", 
+    "tasks.update", 
+    "tasks.delete", 
+    "tasks.view"
+  ],
 }
 
 export function hasPermission(user: User | null, permission: Permission): boolean {

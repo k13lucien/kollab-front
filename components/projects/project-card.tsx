@@ -37,7 +37,7 @@ export function ProjectCard({ project, onProjectUpdated }: ProjectCardProps) {
                 <CardTitle className="text-xl">{project.name}</CardTitle>
                 <Badge variant={statusColors[project.status]}>{project.status}</Badge>
               </div>
-              <CardDescription className="line-clamp-2">{project.description || "No description"}</CardDescription>
+              <CardDescription className="line-clamp-2">{project.description || "Aucune description"}</CardDescription>
             </div>
             <PermissionGuard permissions={["projects.update", "projects.delete"]}>
               <DropdownMenu>
@@ -50,13 +50,13 @@ export function ProjectCard({ project, onProjectUpdated }: ProjectCardProps) {
                   <PermissionGuard permission="projects.update">
                     <DropdownMenuItem onClick={() => setEditOpen(true)}>
                       <Pencil className="mr-2 h-4 w-4" />
-                      Edit
+                      Éditer
                     </DropdownMenuItem>
                   </PermissionGuard>
                   <PermissionGuard permission="projects.delete">
                     <DropdownMenuItem onClick={() => setDeleteOpen(true)} className="text-destructive">
                       <Trash2 className="mr-2 h-4 w-4" />
-                      Delete
+                      Supprimer
                     </DropdownMenuItem>
                   </PermissionGuard>
                 </DropdownMenuContent>
@@ -67,17 +67,17 @@ export function ProjectCard({ project, onProjectUpdated }: ProjectCardProps) {
         <CardContent>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CheckSquare className="h-4 w-4" />
-            <span>{project.tasks_count || 0} tasks</span>
+            <span>{project.tasks_count || 0} tâche{(project.tasks_count || 0) > 1 ? "s" : ""}</span>
           </div>
           {project.team && (
             <p className="text-sm text-muted-foreground mt-2">
-              Team: <span className="font-medium">{project.team.name}</span>
+              Équipe : <span className="font-medium">{project.team.name}</span>
             </p>
           )}
         </CardContent>
         <CardFooter>
           <Button asChild className="w-full">
-            <Link href={`/projects/${project.id}`}>View Project</Link>
+            <Link href={`/projects/${project.id}`}>Voir le projet</Link>
           </Button>
         </CardFooter>
       </Card>
