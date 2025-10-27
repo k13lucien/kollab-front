@@ -99,5 +99,5 @@ export interface CreateTaskData {
   assigned_to?: number
   status?: "pending" | "in_progress" | "completed"
   priority?: "low" | "medium" | "high"
-  due_date?: string
+  deadline?: string // Renommé due_date en deadline
 }

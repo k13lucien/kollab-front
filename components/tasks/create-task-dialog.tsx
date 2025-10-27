@@ -35,7 +35,7 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
   const [projectId, setProjectId] = useState<string>(defaultProjectId?.toString() || "")
   const [status, setStatus] = useState<"pending" | "in_progress" | "completed">("pending")
   const [priority, setPriority] = useState<"low" | "medium" | "high">("medium")
-  const [dueDate, setDueDate] = useState("")
+  const [deadline, setDeadline] = useState("") // Renommé dueDate en deadline
   const [projects, setProjects] = useState<Project[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
@@ -75,7 +75,7 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
         project_id: Number(projectId),
         status,
         priority,
-        due_date: dueDate || undefined,
+        deadline: deadline || undefined, // Renommé due_date en deadline
       })
       toast({
         title: "Succès",
@@ -87,7 +87,7 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
       setProjectId(defaultProjectId?.toString() || "")
       setStatus("pending")
       setPriority("medium")
-      setDueDate("")
+      setDeadline("") // Réinitialisé deadline
       onTaskCreated?.()
     } catch (error) {
       toast({
@@ -181,12 +181,12 @@ export function CreateTaskDialog({ onTaskCreated, defaultProjectId }: CreateTask
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="due-date">Date d'échéance (optionnel)</Label>
+              <Label htmlFor="deadline">Date limite (optionnel)</Label> {/* Renommé Label et htmlFor */}
               <Input
-                id="due-date"
+                id="deadline"
                 type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
                 disabled={isLoading}
               />
             </div>
