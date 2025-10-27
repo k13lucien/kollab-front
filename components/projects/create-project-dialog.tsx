@@ -31,9 +31,10 @@ interface CreateProjectDialogProps {
 export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateProjectDialogProps) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
+  const [label, setLabel] = useState("") // Remplacé description par label
+  const [deadline, setDeadline] = useState("") // Ajout du champ deadline
   const [teamId, setTeamId] = useState<string>(defaultTeamId?.toString() || "")
-  const [status, setStatus] = useState<"active" | "completed" | "archived">("active")
+  // const [status, setStatus] = useState<"active" | "completed" | "archived">("active") // Supprimé
   const [teams, setTeams] = useState<Team[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
@@ -69,9 +70,10 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
     try {
       await projectService.createProject({
         name,
-        description: description || undefined,
+        label: label || undefined, // Envoyer le label
+        deadline: deadline || undefined, // Envoyer la deadline
         team_id: Number(teamId),
-        status,
+        // status, // Supprimé du payload
       })
       toast({
         title: "Succès",
@@ -79,9 +81,10 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
       })
       setOpen(false)
       setName("")
-      setDescription("")
+      setLabel("") // Réinitialiser le label
+      setDeadline("") // Réinitialiser la deadline
       setTeamId(defaultTeamId?.toString() || "")
-      setStatus("active")
+      // setStatus("active") // Supprimé
       onProjectCreated?.()
     } catch (error) {
       toast({
@@ -121,14 +124,23 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="description">Description (optionnel)</Label>
-              <Textarea
-                id="description"
-                placeholder="Décrivez votre projet..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+              <Label htmlFor="label">Label (optionnel)</Label> {/* Remplacé description par label */}
+              <Input
+                id="label"
+                placeholder="Un court label pour votre projet..."
+                value={label}
+                onChange={(e) => setLabel(e.target.value)}
                 disabled={isLoading}
-                rows={3}
+              />
+            </div>
+            <div className="space-y-2"> {/* Ajout du champ deadline */}
+              <Label htmlFor="deadline">Date limite (optionnel)</Label>
+              <Input
+                id="deadline"
+                type="date"
+                value={deadline}
+                onChange={(e) => setDeadline(e.target.value)}
+                disabled={isLoading}
               />
             </div>
             <div className="space-y-2">
@@ -146,7 +158,7 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
+            {/* <div className="space-y-2"> // Supprimé le champ status
               <Label htmlFor="status">Statut</Label>
               <Select value={status} onValueChange={(value: any) => setStatus(value)} disabled={isLoading}>
                 <SelectTrigger id="status">
@@ -158,7 +170,7 @@ export function CreateProjectDialog({ onProjectCreated, defaultTeamId }: CreateP
                   <SelectItem value="archived">Archivé</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setOpen(false)} disabled={isLoading}>

@@ -58,12 +58,12 @@ export default function TeamDetailPage() {
   useEffect(() => {
     const loadTeamData = async () => {
       try {
-        const [teamData, membersData] = await Promise.all([
+        const [teamData/*, membersData*/] = await Promise.all([
           teamService.getTeam(teamId),
-          teamService.getTeamMembers(teamId),
+          /*teamService.getTeamMembers(teamId),*/
         ])
         setTeam(teamData)
-        setMembers(membersData)
+        // setMembers(membersData)
       } catch (error) {
         console.error("Failed to load team:", error)
       } finally {

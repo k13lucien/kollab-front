@@ -86,9 +86,10 @@ export interface CreateTeamData {
 
 export interface CreateProjectData {
   name: string
-  description?: string
+  label?: string // Remplacé description par label
+  deadline?: string // Ajout du champ deadline
   team_id: number
-  status?: "active" | "completed" | "archived"
+  // status?: "active" | "completed" | "archived" // Supprimé
 }
 
 export interface CreateTaskData {
