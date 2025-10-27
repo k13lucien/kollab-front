@@ -10,6 +10,8 @@ import type { Task } from "@/lib/types"
 import { EditTaskDialog } from "./edit-task-dialog"
 import { DeleteTaskDialog } from "./delete-task-dialog"
 import { PermissionGuard } from "@/components/auth/permission-guard"
+import { taskService } from "@/lib/services/task-service" // Import du service de tâches
+import { CheckCheck } from "lucide-react" // Import de l'icône pour "Terminer"
 
 interface TaskCardProps {
   task: Task
@@ -31,6 +33,7 @@ const priorityColors = {
 export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
   const [editOpen, setEditOpen] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
+  const [isCompleting, setIsCompleting] = useState(false) // Nouvel état de chargement
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return null
@@ -39,6 +42,18 @@ export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
       day: "numeric",
       year: "numeric",
     })
+  }
+
+  const handleCompleteTask = async () => {
+    setIsCompleting(true)
+    try {
+      await taskService.completeTask(task.id)
+      onTaskUpdated?.() // Rafraîchir la liste des tâches
+    } catch (error) {
+      console.error("Failed to complete task:", error)
+    } finally {
+      setIsCompleting(false)
+    }
   }
 
   return (
@@ -62,6 +77,14 @@ export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  {task.status !== "completed" && (
+                    <PermissionGuard permission="tasks.update">
+                      <DropdownMenuItem onClick={handleCompleteTask} disabled={isCompleting}>
+                        <CheckCheck className="mr-2 h-4 w-4" />
+                        {isCompleting ? "Terminaison..." : "Terminer la tâche"}
+                      </DropdownMenuItem>
+                    </PermissionGuard>
+                  )}
                   <PermissionGuard permission="tasks.update">
                     <DropdownMenuItem onClick={() => setEditOpen(true)}>
                       <Pencil className="mr-2 h-4 w-4" />
@@ -91,10 +114,10 @@ export function TaskCard({ task, onTaskUpdated }: TaskCardProps) {
                 Assignée à : <span className="font-medium text-foreground">{task.assigned_user.name}</span>
               </p>
             )}
-            {task.due_date && (
+            {task.deadline && (
               <div className="flex items-center gap-2">
                 <Calendar className="h-4 w-4" />
-                <span>Échéance : {formatDate(task.due_date)}</span>
+                <span>Échéance : {formatDate(task.deadline)}</span> {/* Changé due_date en deadline */}
               </div>
             )}
           </div>

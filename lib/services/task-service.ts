@@ -35,4 +35,10 @@ export const taskService = {
   async deleteTask(id: number): Promise<void> {
     await apiClient.delete(`/tasks/${id}`)
   },
+
+  async completeTask(id: number): Promise<Task> {
+    const response = await apiClient.post<ApiResponse<Task> | Task>(`/tasks/${id}/complete`)
+    // @ts-expect-error tolérance format
+    return (response as any)?.data ?? (response as any)
+  },
 }

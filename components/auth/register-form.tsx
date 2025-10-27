@@ -14,6 +14,8 @@ import { useToast } from "@/hooks/use-toast"
 
 export function RegisterForm() {
   const [name, setName] = useState("")
+  const [surname, setSurname] = useState("")
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [passwordConfirmation, setPasswordConfirmation] = useState("")
@@ -37,7 +39,7 @@ export function RegisterForm() {
     setIsLoading(true)
 
     try {
-      await register({ name, email, password, password_confirmation: passwordConfirmation })
+      await register({ name, surname, username, email, password, password_confirmation: passwordConfirmation })
       toast({
         title: "Succès",
         description: "Votre compte a été créé avec succès",
@@ -66,9 +68,33 @@ export function RegisterForm() {
             <Input
               id="name"
               type="text"
-              placeholder="Jean Dupont"
+              placeholder="Jean"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="surname">Prénom</Label>
+            <Input
+              id="surname"
+              type="text"
+              placeholder="Dupont"
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="username">Nom d'utilisateur</Label>
+            <Input
+              id="username"
+              type="text"
+              placeholder="jeandupont"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
               disabled={isLoading}
             />

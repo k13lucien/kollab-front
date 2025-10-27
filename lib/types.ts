@@ -74,6 +74,8 @@ export interface LoginCredentials {
 
 export interface RegisterData {
   name: string
+  surname: string // Ajout du champ surname
+  username: string // Ajout du champ username
   email: string
   password: string
   password_confirmation: string
