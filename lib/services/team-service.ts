@@ -10,10 +10,9 @@ export const teamService = {
   },
 
   async getTeam(id: number): Promise<Team> {
-    const response = await apiClient.get<ApiResponse<Team[]> | Team[]>(`/teams/${id}`)
+    const response = await apiClient.get<ApiResponse<Team> | Team>(`/teams/${id}`)
     // @ts-expect-error tolérance format
-    const teams = (response as any)?.data ?? (response as any)
-    return teams && teams.length > 0 ? teams[0] : null // Retourne la première équipe si la réponse est un tableau, sinon null
+    return (response as any)?.data ?? (response as any)
   },
 
   async createTeam(data: CreateTeamData): Promise<Team> {

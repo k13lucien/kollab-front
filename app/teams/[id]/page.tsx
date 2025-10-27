@@ -24,7 +24,7 @@ export default function TeamDetailPage() {
   const [newMemberEmail, setNewMemberEmail] = useState("");
   const [addMemberLoading, setAddMemberLoading] = useState(false);
   const [removeLoading, setRemoveLoading] = useState<number|null>(null);
-  const userIsLeader = !!team && !!user && (team as any).leader_id === user.id;
+  const userIsLeader = !!team && !!user && team.leader_id === user.id;
 
   const handleAddMember = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,8 +33,14 @@ export default function TeamDetailPage() {
     try {
       await teamService.addTeamMemberByEmail(teamId, newMemberEmail)
       setNewMemberEmail("")
-      const membersData = await teamService.getTeamMembers(teamId)
-      setMembers(membersData)
+      // const membersData = await teamService.getTeamMembers(teamId) // Cet appel n'est plus nécessaire
+      // setMembers(membersData) // Cet appel n'est plus nécessaire
+      // Pour rafraîchir les membres, nous devons recharger l'équipe entière
+      const updatedTeam = await teamService.getTeam(teamId);
+      if (updatedTeam) {
+        setTeam(updatedTeam);
+        setMembers(updatedTeam.members || []);
+      }
     } catch (err) {
       console.error("Échec de l'ajout du membre:", err)
     } finally {
@@ -46,8 +52,14 @@ export default function TeamDetailPage() {
     setRemoveLoading(userId);
     try {
       await teamService.removeTeamMember(teamId, userId)
-      const membersData = await teamService.getTeamMembers(teamId)
-      setMembers(membersData)
+      // const membersData = await teamService.getTeamMembers(teamId) // Cet appel n'est plus nécessaire
+      // setMembers(membersData) // Cet appel n'est plus nécessaire
+      // Pour rafraîchir les membres, nous devons recharger l'équipe entière
+      const updatedTeam = await teamService.getTeam(teamId);
+      if (updatedTeam) {
+        setTeam(updatedTeam);
+        setMembers(updatedTeam.members || []);
+      }
     } catch (err) {
       console.error("Échec du retrait du membre:", err)
     } finally {
@@ -58,12 +70,9 @@ export default function TeamDetailPage() {
   useEffect(() => {
     const loadTeamData = async () => {
       try {
-        const [teamData/*, membersData*/] = await Promise.all([
-          teamService.getTeam(teamId),
-          /*teamService.getTeamMembers(teamId),*/
-        ])
+        const teamData = await teamService.getTeam(teamId)
         setTeam(teamData)
-        // setMembers(membersData)
+        setMembers(teamData?.members || [])
       } catch (error) {
         console.error("Failed to load team:", error)
       } finally {
@@ -108,7 +117,7 @@ export default function TeamDetailPage() {
           </Button>
           <div className="flex-1">
             <h1 className="text-3xl font-bold tracking-tight">{team.name}</h1>
-            <p className="text-muted-foreground">{team.description || "Aucune description"}</p>
+            <p className="text-muted-foreground">{team.label || "Aucune description"}</p> {/* Changé team.description en team.label */}
           </div>
         </div>
 
@@ -119,7 +128,7 @@ export default function TeamDetailPage() {
                 <Users className="h-5 w-5" />
                 Membres de l'équipe
               </CardTitle>
-              <CardDescription>{members.length} membre(s) dans cette équipe</CardDescription>
+              <CardDescription>{team.members?.length || 0} membre(s) dans cette équipe</CardDescription> {/* Changé members.length en team.members?.length */}
               {userIsLeader && (
                 <form onSubmit={handleAddMember} className="mt-4 flex gap-2 items-end">
                   <div>
@@ -132,25 +141,27 @@ export default function TeamDetailPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {members.map((member) => (
-                  <div key={member.id} className="flex items-center justify-between gap-2">
-                    <div>
-                      <p className="font-medium flex items-center gap-2">
-                        {member.user.name}
-                        {member.role === "leader" && <Badge variant="default">Leader</Badge>}
-                        {member.role === "admin" && <Badge variant="default">Leader</Badge>}
-                        {member.role !== "admin" && member.role !== "leader" && <Badge variant="secondary">Membre</Badge>}
-                      </p>
-                      <p className="text-sm text-muted-foreground">{member.user.email}</p>
+                {team.members && team.members.length > 0 ? ( /* Ajout de la condition pour team.members */
+                  team.members.map((member) => ( /* Changé members.map en team.members.map */
+                    <div key={member.id} className="flex items-center justify-between gap-2">
+                      <div>
+                        <p className="font-medium flex items-center gap-2">
+                          {member.name} {/* Accès direct à member.name */}
+                          {team.leader_id === member.id && <Badge variant="default">Leader</Badge>}
+                          {team.leader_id !== member.id && <Badge variant="secondary">Membre</Badge>} {/* Badge "Membre" par défaut si pas leader */}
+                        </p>
+                        <p className="text-sm text-muted-foreground">{member.email}</p> {/* Accès direct à member.email */}
+                      </div>
+                      {userIsLeader && team.leader_id !== member.id && (
+                        <Button size="sm" variant="destructive" onClick={() => handleRemoveMember(member.id)} disabled={removeLoading === member.id}>
+                          {removeLoading === member.id ? "Retrait..." : "Retirer"}
+                        </Button>
+                      )}
                     </div>
-                    {userIsLeader && member.role !== "admin" && member.role !== "leader" && (
-                      <Button size="sm" variant="destructive" onClick={() => handleRemoveMember(member.user.id)} disabled={removeLoading === member.user.id}>
-                        {removeLoading === member.user.id ? "Retrait..." : "Retirer"}
-                      </Button>
-                    )}
-                  </div>
-                ))}
-                {members.length === 0 && <p className="text-sm text-muted-foreground">Aucun membre pour le moment</p>}
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">Aucun membre pour le moment</p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -161,10 +172,20 @@ export default function TeamDetailPage() {
                 <FolderKanban className="h-5 w-5" />
                 Projets
               </CardTitle>
-              <CardDescription>Projets dans cette équipe</CardDescription>
+              <CardDescription>{team.projects?.length || 0} projet(s) dans cette équipe</CardDescription> {/* Ajout de team.projects?.length */}
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">Aucun projet pour le moment</p>
+              {team.projects && team.projects.length > 0 ? ( /* Ajout de la condition pour team.projects */
+                <div className="space-y-3">
+                  {team.projects.map((project) => (
+                    <Link key={project.id} href={`/projects/${project.id}`} className="block font-medium text-primary hover:underline">
+                      {project.name}
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">Aucun projet pour le moment</p>
+              )}
             </CardContent>
           </Card>
         </div>

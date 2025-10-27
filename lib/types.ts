@@ -11,10 +11,14 @@ export interface User {
 export interface Team {
   id: number
   name: string
-  description: string | null
+  label: string | null // Remplacé description par label
+  leader_id: number
+  leader: User // Ajout du champ leader
   created_at: string
   updated_at: string
   members_count?: number
+  members?: User[] // Changé TeamMember[] en User[]
+  projects?: Project[] // Ajout du tableau des projets
 }
 
 export interface Project {
