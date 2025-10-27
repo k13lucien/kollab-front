@@ -18,7 +18,7 @@ export default function TeamDetailPage() {
   const router = useRouter()
   const teamId = Number(params.id)
   const [team, setTeam] = useState<Team | null>(null)
-  const [members, setMembers] = useState<TeamMember[]>([])
+  // const [members, setMembers] = useState<User[]>([]) // Supprimé l'état members séparé
   const [isLoading, setIsLoading] = useState(true)
   const { user } = useAuth()
   const [newMemberEmail, setNewMemberEmail] = useState("");
@@ -33,13 +33,11 @@ export default function TeamDetailPage() {
     try {
       await teamService.addTeamMemberByEmail(teamId, newMemberEmail)
       setNewMemberEmail("")
-      // const membersData = await teamService.getTeamMembers(teamId) // Cet appel n'est plus nécessaire
-      // setMembers(membersData) // Cet appel n'est plus nécessaire
       // Pour rafraîchir les membres, nous devons recharger l'équipe entière
       const updatedTeam = await teamService.getTeam(teamId);
       if (updatedTeam) {
         setTeam(updatedTeam);
-        setMembers(updatedTeam.members || []);
+        // setMembers(updatedTeam.members || []); // Plus nécessaire
       }
     } catch (err) {
       console.error("Échec de l'ajout du membre:", err)
@@ -52,13 +50,11 @@ export default function TeamDetailPage() {
     setRemoveLoading(userId);
     try {
       await teamService.removeTeamMember(teamId, userId)
-      // const membersData = await teamService.getTeamMembers(teamId) // Cet appel n'est plus nécessaire
-      // setMembers(membersData) // Cet appel n'est plus nécessaire
       // Pour rafraîchir les membres, nous devons recharger l'équipe entière
       const updatedTeam = await teamService.getTeam(teamId);
       if (updatedTeam) {
         setTeam(updatedTeam);
-        setMembers(updatedTeam.members || []);
+        // setMembers(updatedTeam.members || []); // Plus nécessaire
       }
     } catch (err) {
       console.error("Échec du retrait du membre:", err)
@@ -72,7 +68,7 @@ export default function TeamDetailPage() {
       try {
         const teamData = await teamService.getTeam(teamId)
         setTeam(teamData)
-        setMembers(teamData?.members || [])
+        // setMembers(teamData?.members || []) // Plus nécessaire
       } catch (error) {
         console.error("Failed to load team:", error)
       } finally {
