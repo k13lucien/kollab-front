@@ -1,0 +1,50 @@
+# Workflow à ajouter dans k13lucien/kollab-front
+# Chemin: .github/workflows/trigger-deploy.yml
+
+name: Trigger DevOps Deployment
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    types: [ closed ]
+
+jobs:
+  trigger-deployment:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger DevOps Pipeline
+        run: |
+          echo "🔄 Frontend updated - triggering DevOps deployment..."
+          
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.DEVOPS_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Content-Type: application/json" \
+            https://api.github.com/repos/IsmailaCONGOMBO/kollab-ci-cd/dispatches \
+            -d '{
+              "event_type": "frontend_updated",
+              "client_payload": {
+                "repository": "k13lucien/kollab-front",
+                "ref": "${{ github.sha }}",
+                "branch": "${{ github.ref_name }}",
+                "actor": "${{ github.actor }}",
+                "event": "${{ github.event_name }}",
+                "timestamp": "${{ github.event.head_commit.timestamp }}"
+              }
+            }'
+          
+          echo "✅ DevOps pipeline triggered successfully!"
+          echo "📋 Deployment will be available at: https://github.com/IsmailaCONGOMBO/kollab-ci-cd/actions"
+
+      - name: Deployment Status
+        run: |
+          echo "🚀 Frontend deployment triggered!"
+          echo "📦 Commit: ${{ github.sha }}"
+          echo "👤 Author: ${{ github.actor }}"
+          echo "🌟 Branch: ${{ github.ref_name }}"
+          echo ""
+          echo "🔗 Monitor deployment: https://github.com/IsmailaCONGOMBO/kollab-ci-cd/actions"
