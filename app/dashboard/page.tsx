@@ -10,7 +10,7 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Tableau de bord</h1>
-          <p className="text-muted-foreground">Bon retour !!! Voici un aperçu de votre espace de travail.</p>
+          <p className="text-muted-foreground">Bienvenue !!! Voici un aperçu de votre espace de travail.</p>
         </div>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
